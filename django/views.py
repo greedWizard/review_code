@@ -4,14 +4,17 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
 
 
+''' Опять же первое что бросилось в глаза - вся логика во вьюхах. '''
+
+
 class TransferView(FormView):
     
     form_class = TransferForm
-    template_name = 'index.html'
+    template_name = 'index.html' # а где сам шаблон? Если так всё задумано то ок.
 
     def get(self, request, *args, **kwargs):
         ctx = self.get_context_data(**kwargs)
-        ctx['userlist'] = self.userlist()
+        ctx['userlist'] = self.userlist() # почему нельзя вызвать метод менеджера? Зачем именно этот метод?
 
         return self.render_to_response(ctx)
 
@@ -25,8 +28,9 @@ class TransferView(FormView):
         user_from = User.objects.get(id=request.POST['user_from'])
         
         # ищем сумму на счёте пользователя
-        us = user_from.users_set.all()
+        us = user_from.users_set.all() 
 
+        # здесь замечания идентичные в DRF 
         if us:
             acc_sum = us[0].account
 
@@ -60,14 +64,18 @@ class TransferView(FormView):
         return self.render_to_response(ctx)
 
     def userlist(self):
+        '''
+            Зачем нужен этот метод? Он собирает всех пользователей в список словарей
+            , но зачем, если есть .objects.all() у менеджера?
+        '''
         user_list = []
 
-        for i in User.objects.all():
+        for i in User.objects.all(): # не понятная переменная цикла, правильно: user in User.objects.all()
             cur_user = {}
             cur_user['id'] = i.id
             cur_user['username'] = i.username
             if i.users_set.all():
-                tmp = i.users_set.get()
+                tmp = i.users_set.get() # опять не понятно что это за поле и почему get пустой
                 cur_user['inn'] = tmp.inn
                 cur_user['account'] = tmp.account
             user_list.append(cur_user)

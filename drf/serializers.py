@@ -1,8 +1,21 @@
-from rest_framework import serializers
+from rest_framework import serializers # лучше использовать специальный сериализатор для моделей. 
 
 from .models import Users
 
+# по пепу надо два отступа :)
 class TransferSerializer(serializers.Serializer):
-    user_from = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
-    inn_to    = serializers.IntegerField()
-    amount    = serializers.FloatField()
+    '''
+        1. Удобней намного было бы использовать ModelSerializer.
+        2. Почему пересылка от юзера к ИНН? Логичнее было бы делать пересылки так:
+        от инн к инн, или от юзера к юзеру, цепляя инн уже в коде.
+        3. Могут быть разные случаи использования сериализатор. Может понадобится чтение и запись, может возникнуть
+        проблема с полями. Для записи мы ещё не знаем id, который получаем при чтении. Хранить всё в одном сериализаторе
+        не лучшая идея.
+    '''
+    user_from = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all()) # Лично мне не очень нравится этот тип
+                                    # я бы использовал обычный IntegerField, а всю логику с релейтами перенёс бы в сервисы. 
+    inn_to    = serializers.IntegerField() # Почему целочисленный тип здесь плохая идея уже описано в моделях. 
+                                # кроме того, в тз написано что получателей может быть много, тогда нужно было использовать ArrayField
+    amount    = serializers.FloatField() # тут тоже надо DecimalField
+
+    # где класс мета с полями?

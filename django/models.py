@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+# Замечания к моделям такие же. как в дрф
+
 class Users(models.Model):
     user =      models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Юзер')
     inn =       models.IntegerField(verbose_name='ИНН')

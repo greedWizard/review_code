@@ -6,10 +6,9 @@ from .views import TransferViewSet
 
 
 router = DefaultRouter()
-router.register(r'transfer', TransferViewSet, basename='auth')
+router.register('transfer', TransferViewSet, basename='auth') # basename='transfers'
 
-
+# urlpatterns = router.urls
 urlpatterns = [
-    url(r'api/', include(router.urls)),
+    url(r'api/', include(router.urls)), # url() уже морально устарел, надо использовать path
 ]
-
