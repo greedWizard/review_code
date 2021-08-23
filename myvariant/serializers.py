@@ -27,6 +27,7 @@ class TransactionSerializerPost(TransactionSerializerBase):
     inn_to = serializers.ListField(
         children=serializers.CharField()
     )
+    sender_id = serializers.IntegerField()
 
     class Meta(TransactionSerializerBase.Meta):
         fields = TransactionSerializerBase.Meta.fields + [
