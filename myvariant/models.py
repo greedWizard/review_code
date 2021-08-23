@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MinLengthValidator
 
-from .validators import validate_starts_with_zero
-
 
 class Account(models.Model):
     user = models.OneToOneField(
@@ -13,13 +11,12 @@ class Account(models.Model):
     )
     inn = models.CharField(
         'ИНН', 
-        max_length=11,
-        validators=[validate_starts_with_zero,],
         unique=True,
     )
     balance = models.DecimalField(
         'баланс',
-        max_digits=2,
+        decimal_places=2,
+        default=0.0,
     )
 
 

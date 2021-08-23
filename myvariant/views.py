@@ -19,11 +19,10 @@ class TransactionViewSet(ViewSet):
         post_sr.is_valid(raise_exception=True)
 
         transactions = self.service().transact(
-            sender_id=post_sr.validated_data.get('sender_Id'),
+            sender_id=post_sr.validated_data.get('sender_id'),
             inn_list=post_sr.validated_data.get('inn_to'),
             amount=post_sr.validated_data.get('amount')
         )
-
         read_sr = self.read_serializer(transactions, many=True)
 
         return Response(

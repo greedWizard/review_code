@@ -27,7 +27,6 @@ class TransactionSerializerPost(TransactionSerializerBase):
     inn_to = serializers.ListField(
         children=serializers.CharField()
     )
-    total_amount = serializers.DecimalField()
 
     class Meta(TransactionSerializerBase.Meta):
         fields = TransactionSerializerBase.Meta.fields + [
